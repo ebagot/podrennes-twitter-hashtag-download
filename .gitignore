@@ -1,0 +1,13 @@
+/..spec
+/.venv
+/app_cmd.spec
+/build
+/config.ini
+/dist
+/launch.spec
+/save
+/scrap.db
+/skindependent_FsV3bDlWIAgVpmV.jpg
+/snscrape.exe
+/tmp.json
+/__pycache__
