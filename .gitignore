@@ -2,7 +2,6 @@
 /.venv
 /app_cmd.spec
 /build
-/config.ini
 /dist
 /launch.spec
 /save
