@@ -9,7 +9,8 @@ def ftp_is_connected(ftp_host, ftp_login, ftp_pass, ftp_dir):
         return False
     ftp_conn = ftplib.FTP(ftp_host, ftp_login, ftp_pass)
     try:
-        return ftp_dir in ftp_conn.nlst()
+        ftp_conn.cwd(ftp_dir)
+        return True
     except (socket.timeout, OSError):
         return False
 
