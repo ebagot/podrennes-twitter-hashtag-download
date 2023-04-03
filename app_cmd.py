@@ -1,6 +1,7 @@
 import argparse, time
 from scrap import Scrap
 
+#Version ligne de commande 
 parser = argparse.ArgumentParser(prog="Podrennes Twitter Hashtag Downloader")
 parser.add_argument("--hashtag", required=True, help="Hashtag")
 parser.add_argument("--ftp_host", required=True, help="FTP Host")
