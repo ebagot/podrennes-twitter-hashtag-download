@@ -16,6 +16,8 @@ def ftp_is_connected(ftp_host, ftp_login, ftp_pass, ftp_dir):
 
 #Lecture du fichier de config
 config_file = 'config.ini'
+str_now = datetime.now().strftime("%d%m%Y%H%M%S")
+log_file = open(f'podrennes_{str_now}.log', 'w')
 if path.exists(config_file): 
     config = configparser.ConfigParser()
     config.read('config.ini')
@@ -31,26 +33,26 @@ if path.exists(config_file):
     reset = podrennes_config.get('reset') == '1'
 
     if(reset):
-        print("RESETTING")
+        print("RESETTING", file = log_file)
         Scrap().reset()
-        print("RESETTING DONE")
+        print("RESETTING DONE", file = log_file)
     if hashtags:
         if ftp_is_connected(ftp_host, ftp_login, ftp_pass, ftp_dir):
             while True:
                 for hashtag in hashtags:
-                    print(f"Recherche de {hashtag} sur FTP {ftp_host} / Keep Local : {keep_local} / Reset : {reset}")
+                    print(f"Recherche de {hashtag} sur FTP {ftp_host} / Keep Local : {keep_local} / Reset : {reset}", file = log_file)
                     str_now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-                    print(f"Recherche de {hashtag} - {str_now}")
+                    print(f"Recherche de {hashtag} - {str_now}", file = log_file)
                     scrapper = Scrap(ftp_host, ftp_login, ftp_pass, ftp_dir, keep_local)
                     scrapper.run(hashtag)
-                print(f"Waiting {sleep_time} seconds");
+                print(f"Waiting {sleep_time} seconds", file = log_file);
                 time.sleep(sleep_time)
         else:
-            print(f" FTP indisponible ou dossier FTP inexistant")
+            print(f" FTP indisponible ou dossier FTP inexistant", file = log_file)
     else:
-        print(f"Pas de hashtags")
+        print(f"Pas de hashtags", file = log_file)
 else:
-    print(f"Erreur : Pas de fichier {config_file}")
+    print(f"Erreur : Pas de fichier {config_file}", file = log_file)
     
 
 
