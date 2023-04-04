@@ -27,8 +27,8 @@ if path.exists(config_file):
     ftp_pass = podrennes_config.get('ftp_pass')
     ftp_dir = podrennes_config.get('ftp_dir')
     sleep_time = (int) (podrennes_config.get('loop'))
-    keep_local = podrennes_config.get('keep_local') == 1
-    reset = podrennes_config.get('reset') == 1
+    keep_local = podrennes_config.get('keep_local') == '1'
+    reset = podrennes_config.get('reset') == '1'
 
     if(reset):
         print("RESETTING")
