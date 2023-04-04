@@ -27,11 +27,13 @@ if path.exists(config_file):
     ftp_pass = podrennes_config.get('ftp_pass')
     ftp_dir = podrennes_config.get('ftp_dir')
     sleep_time = (int) (podrennes_config.get('loop'))
-    keep_local = (bool) (podrennes_config.get('keep_local'))
-    reset = (bool) (podrennes_config.get('reset'))
+    keep_local = podrennes_config.get('keep_local') == 1
+    reset = podrennes_config.get('reset') == 1
 
     if(reset):
+        print("RESETTING")
         Scrap().reset()
+        print("RESETTING DONE")
     if hashtags:
         if ftp_is_connected(ftp_host, ftp_login, ftp_pass, ftp_dir):
             while True:
@@ -41,7 +43,7 @@ if path.exists(config_file):
                     print(f"Recherche de {hashtag} - {str_now}")
                     scrapper = Scrap(ftp_host, ftp_login, ftp_pass, ftp_dir, keep_local)
                     scrapper.run(hashtag)
-                
+                print(f"Waiting {sleep_time} seconds");
                 time.sleep(sleep_time)
         else:
             print(f" FTP indisponible ou dossier FTP inexistant")
