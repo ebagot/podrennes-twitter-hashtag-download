@@ -16,8 +16,8 @@ def ftp_is_connected(ftp_host, ftp_login, ftp_pass, ftp_dir):
 
 #Lecture du fichier de config
 config_file = 'config.ini'
-str_now = datetime.now().strftime("%d%m%Y%H%M%S")
-log_file = open(f'podrennes_{str_now}.log', 'w')
+log_file_name = "podrennes_" + datetime.now().strftime("%d%m%Y%H%M%S")+".log"
+log_file = open(log_file_name, 'a')
 if path.exists(config_file): 
     config = configparser.ConfigParser()
     config.read('config.ini')
@@ -36,9 +36,11 @@ if path.exists(config_file):
         print("RESETTING", file = log_file)
         Scrap().reset()
         print("RESETTING DONE", file = log_file)
+    log_file.close()
     if hashtags:
         if ftp_is_connected(ftp_host, ftp_login, ftp_pass, ftp_dir):
             while True:
+                log_file = open(log_file_name, 'a')
                 for hashtag in hashtags:
                     print(f"Recherche de {hashtag} sur FTP {ftp_host} / Keep Local : {keep_local} / Reset : {reset}", file = log_file)
                     str_now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
@@ -46,13 +48,20 @@ if path.exists(config_file):
                     scrapper = Scrap(ftp_host, ftp_login, ftp_pass, ftp_dir, keep_local)
                     scrapper.run(hashtag)
                 print(f"Waiting {sleep_time} seconds", file = log_file);
+                log_file.close()
                 time.sleep(sleep_time)
         else:
+            log_file = open(log_file_name, 'a')
             print(f" FTP indisponible ou dossier FTP inexistant", file = log_file)
+            log_file.close()
     else:
+        log_file = open(log_file_name, 'a')
         print(f"Pas de hashtags", file = log_file)
+        log_file.close()
 else:
+    log_file = open(log_file_name, 'a')
     print(f"Erreur : Pas de fichier {config_file}", file = log_file)
+    log_file.close()
     
 
 

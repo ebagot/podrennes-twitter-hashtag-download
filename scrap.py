@@ -24,6 +24,7 @@ class Scrap:
         os.system(f"snscrape --jsonl --max-results 10 twitter-hashtag {hashtag} >> {tmp_file}")
         jsonl = open(tmp_file, 'r')
         lines = jsonl.readlines()
+        log_file = open(f'podrennes_tweets.log', 'w')
         for line in lines:
             tweet = json.loads(line)
             user = tweet["user"]["username"]
@@ -35,7 +36,7 @@ class Scrap:
                         image_url = self.getRealUrlPhoto(str(media["fullUrl"]))
                         cur.execute(f"SELECT Count() FROM photos WHERE photo='{image_url}'")
                         if cur.fetchone()[0] == 0:
-                            print("Tweet trouvé : " + tweet["url"] + " et photo : " + image_url)
+                            print("Tweet trouvé : " + tweet["url"] + " et photo : " + image_url, file = log_file)
                             cur.execute(f"INSERT INTO photos VALUES ('{image_url}', '{user}', 0)")
                             con.commit()
 
@@ -44,7 +45,7 @@ class Scrap:
         rows = cur.fetchall()
         for row in rows:
             photo_url = row[0]
-            photo_filename = row[1] + "_" + row[0].split("/").pop()
+            photo_filename = row[1] + "___" + row[0].split("/").pop()
             photo_file = open(photo_filename, 'wb')
             photo_file.write(requests.get(photo_url, allow_redirects=True).content)
             photo_file = open(photo_filename, 'rb')
