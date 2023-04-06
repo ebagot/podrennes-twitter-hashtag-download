@@ -18,13 +18,13 @@ class Scrap:
         return split[0] + "." + extension
 
     def scrapTwitterHashtag(self, con: sqlite3.Connection,  cur:sqlite3.Cursor, hashtag:str):
-        tmp_file = "tmp.json"
+        tmp_file = os.path.dirname(os.path.abspath(__file__)) + "/tmp.json"
         if os.path.exists(tmp_file): 
             os.remove(tmp_file)
         os.system(f"snscrape --jsonl --max-results 100 twitter-hashtag {hashtag} >> {tmp_file}")
         jsonl = open(tmp_file, 'r')
         lines = jsonl.readlines()
-        log_file = open(f'podrennes_tweets.log', 'a')
+        log_file = open(os.path.dirname(os.path.abspath(__file__)) + '/podrennes_tweets.log', 'a')
         nb_lines = (str) (len(lines))
         str_now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
         print(" ----------- " + str_now + " ----------- ", file = log_file)

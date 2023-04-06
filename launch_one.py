@@ -23,8 +23,8 @@ def ftp_is_connected(ftp_host, ftp_login, ftp_pass, ftp_dir):
         return False
 
 #Lecture du fichier de config
-config_file = 'config.ini'
-log_file_name = "podrennes_launch_one.log"
+config_file = path.dirname(path.abspath(__file__)) +'/config.ini'
+log_file_name = path.dirname(path.abspath(__file__)) + "/podrennes_launch_one.log"
 log_file = open(log_file_name, 'a')
 if path.exists(config_file): 
     config = configparser.ConfigParser()
