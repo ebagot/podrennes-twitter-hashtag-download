@@ -17,11 +17,11 @@ class Scrap:
         extension = split[1].split("&")[0].split("=")[1]
         return split[0] + "." + extension
 
-    def scrapTwitterHashtag(self, con: sqlite3.Connection,  cur:sqlite3.Cursor, hashtag:str):
+    def scrapTwitterHashtag(self, con: sqlite3.Connection,  cur:sqlite3.Cursor, hashtag:str, command:str):
         tmp_file = os.path.dirname(os.path.abspath(__file__)) + "/tmp.json"
         if os.path.exists(tmp_file): 
             os.remove(tmp_file)
-        os.system(f"snscrape --jsonl --max-results 100 twitter-hashtag {hashtag} >> {tmp_file}")
+        os.system(f"{command} --jsonl --max-results 100 twitter-hashtag {hashtag} >> {tmp_file}")
         jsonl = open(tmp_file, 'r')
         lines = jsonl.readlines()
         log_file = open(os.path.dirname(os.path.abspath(__file__)) + '/podrennes_tweets.log', 'a')
@@ -65,7 +65,7 @@ class Scrap:
             else:
                 os.remove(photo_filename)
         
-    def run(self, hashtag, upload = True):
+    def run(self, hashtag, command="snscrape", upload = True):
         #Connexion DB
         con = sqlite3.connect(self.db)
         cur = con.cursor()
@@ -73,7 +73,7 @@ class Scrap:
         con.commit()
 
         #Scrapping Twitter
-        self.scrapTwitterHashtag(con, cur, hashtag)
+        self.scrapTwitterHashtag(con, cur, hashtag,command)
         
         #Upload FTP
         if upload:
