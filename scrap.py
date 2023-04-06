@@ -3,7 +3,7 @@ from datetime import datetime
 
 class Scrap:
     
-    db = "scrap.db"
+    db = os.path.dirname(os.path.abspath(__file__)) + "/scrap.db"
         
     def  __init__(self, ftp_host = "ftp.nanami.fr", ftp_login = "nemotaku", ftp_pass  = "nemoporc", ftp_dir = "sandbox", keep_local = False) -> None:
         self.ftp_host = ftp_host
