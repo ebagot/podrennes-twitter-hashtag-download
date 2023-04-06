@@ -45,7 +45,7 @@ if path.exists(config_file):
                 str_now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
                 print(f"Recherche de {hashtag} - {str_now}", file = log_file)
                 scrapper = Scrap(ftp_host, ftp_login, ftp_pass, ftp_dir, keep_local)
-                scrapper.run(hashtag)
+                scrapper.run(hashtag, False)
               
         else:
             log_file = open(log_file_name, 'a')

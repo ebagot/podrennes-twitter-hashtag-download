@@ -60,7 +60,7 @@ class Scrap:
             else:
                 os.remove(photo_filename)
         
-    def run(self, hashtag):
+    def run(self, hashtag, upload = True):
         #Connexion DB
         con = sqlite3.connect(self.db)
         cur = con.cursor()
@@ -71,10 +71,11 @@ class Scrap:
         self.scrapTwitterHashtag(con, cur, hashtag)
         
         #Upload FTP
-        ftp = ftplib.FTP(self.ftp_host, self.ftp_login, self.ftp_pass)
-        ftp.cwd(self.ftp_dir)
-        self.uploadFiles(con, cur, ftp)
-        ftp.close()
+        if upload:
+            ftp = ftplib.FTP(self.ftp_host, self.ftp_login, self.ftp_pass)
+            ftp.cwd(self.ftp_dir)
+            self.uploadFiles(con, cur, ftp)
+            ftp.close()
         
     def reset(self):
         if os.path.exists(self.db): 
