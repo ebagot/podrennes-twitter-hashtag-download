@@ -24,7 +24,7 @@ class Scrap:
         os.system(f"snscrape --jsonl --max-results 10 twitter-hashtag {hashtag} >> {tmp_file}")
         jsonl = open(tmp_file, 'r')
         lines = jsonl.readlines()
-        log_file = open(f'podrennes_tweets.log', 'w')
+        log_file = open(f'podrennes_tweets.log', 'a')
         for line in lines:
             tweet = json.loads(line)
             user = tweet["user"]["username"]
