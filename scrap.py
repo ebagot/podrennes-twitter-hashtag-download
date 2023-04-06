@@ -32,7 +32,7 @@ class Scrap:
         for line in lines:
             tweet = json.loads(line)
             user = tweet["user"]["username"]
-            print("Tweet trouvé : " + user, file = log_file)
+            #print("Tweet trouvé : " + user, file = log_file)
             medias = tweet["media"]
             if type(medias) is list:
                 for media in medias:
@@ -44,26 +44,31 @@ class Scrap:
                             print("Tweet trouvé : " + tweet["url"] + " et photo : " + image_url, file = log_file)
                             cur.execute(f"INSERT INTO photos VALUES ('{image_url}', '{user}', 0)")
                             con.commit()
+        log_file.close()
 
     def uploadFiles(self, con:sqlite3.Connection,  cur:sqlite3.Cursor, ftp: ftplib.FTP):
         cur.execute(f"SELECT * FROM photos WHERE statut=0")
+        log_file = open(os.path.dirname(os.path.abspath(__file__)) + '/podrennes_tweets.log', 'a')
         rows = cur.fetchall()
         for row in rows:
             photo_url = row[0]
             photo_filename = row[1] + "___" + row[0].split("/").pop()
-            photo_file = open(photo_filename, 'wb')
+            photo_file = open(os.path.dirname(os.path.abspath(__file__)) + "/" + photo_filename, 'wb')
             photo_file.write(requests.get(photo_url, allow_redirects=True).content)
-            photo_file = open(photo_filename, 'rb')
+            photo_file = open(os.path.dirname(os.path.abspath(__file__)) + "/" + photo_filename, 'rb')
+            print(f"FTP : {photo_filename}", file = log_file)
             ftp.storbinary(f'STOR {photo_filename}', photo_file)     # send the file
             photo_file.close()                                    # close file and FTP
             cur.execute(f"UPDATE photos SET statut=1 WHERE photo = '{photo_url}'")
             con.commit()
             if self.keep_local:
-                if os.path.exists("save") == False:
-                    os.mkdir("save")
-                shutil.move(photo_filename, os.sep.join(["save",  datetime.now().strftime("%d%m%Y_%H%M%S") + "_" + photo_filename])) 
+                save_path = os.path.dirname(os.path.abspath(__file__)) 
+                if os.path.exists(save_path) == False:
+                    os.mkdir(save_path)
+                shutil.move(photo_filename, save_path + "/" +   datetime.now().strftime("%d%m%Y_%H%M%S") + "_" + photo_filename) 
             else:
                 os.remove(photo_filename)
+        log_file.close()
         
     def run(self, hashtag, command="snscrape", upload = True):
         #Connexion DB
