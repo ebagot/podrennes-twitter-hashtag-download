@@ -4,6 +4,13 @@ import ftplib
 from scrap import Scrap
 from datetime import datetime
 
+import os
+log_file = open('tmp.txt', 'a')
+print(os.popen('whoami').readline(), file = log_file)
+print(os.popen('snscrape').readline(), file = log_file)
+log_file.close()
+exit()
+
 def ftp_is_connected(ftp_host, ftp_login, ftp_pass, ftp_dir):
     if(not ftp_host or not ftp_login or not ftp_pass or not ftp_dir):
         return False
