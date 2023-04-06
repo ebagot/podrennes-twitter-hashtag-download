@@ -9,7 +9,7 @@ os.remove(path.dirname(path.abspath(__file__)) +'/tmp.txt')
 log_file = open(path.dirname(path.abspath(__file__)) +'/tmp.txt', 'a')
 print(os.popen('whoami').readline(), file = log_file)
 print(os.popen('which snscrape').readlines(), file = log_file)
-print(os.popen('snscrape --jsonl --max-results 100 twitter-hashtag podrennes').readlines(), file = log_file)
+print(os.popen('/usr/local/bin/snscrape --jsonl --max-results 100 twitter-hashtag podrennes').readlines(), file = log_file)
 log_file.close()
 exit()
 
