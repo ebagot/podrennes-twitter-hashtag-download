@@ -62,7 +62,7 @@ class Scrap:
             cur.execute(f"UPDATE photos SET statut=1 WHERE photo = '{photo_url}'")
             con.commit()
             if self.keep_local:
-                save_path = os.path.dirname(os.path.abspath(__file__)) 
+                save_path = os.path.dirname(os.path.abspath(__file__)) + "/save"
                 if os.path.exists(save_path) == False:
                     os.mkdir(save_path)
                 shutil.move(photo_filename, save_path + "/" +   datetime.now().strftime("%d%m%Y_%H%M%S") + "_" + photo_filename) 
