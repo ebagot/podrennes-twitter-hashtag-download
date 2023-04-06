@@ -26,6 +26,8 @@ class Scrap:
         lines = jsonl.readlines()
         log_file = open(f'podrennes_tweets.log', 'a')
         nb_lines = (str) (len(lines))
+        str_now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+        print(" ----------- " + str_now + " ----------- ", file = log_file)
         print("Tweets trouvés : " + nb_lines, file = log_file)
         for line in lines:
             tweet = json.loads(line)
