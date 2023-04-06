@@ -21,13 +21,16 @@ class Scrap:
         tmp_file = "tmp.json"
         if os.path.exists(tmp_file): 
             os.remove(tmp_file)
-        os.system(f"snscrape --jsonl --max-results 10 twitter-hashtag {hashtag} >> {tmp_file}")
+        os.system(f"snscrape --jsonl --max-results 100 twitter-hashtag {hashtag} >> {tmp_file}")
         jsonl = open(tmp_file, 'r')
         lines = jsonl.readlines()
         log_file = open(f'podrennes_tweets.log', 'a')
+        nb_lines = (str) (len(lines))
+        print("Tweets trouvés : " + nb_lines, file = log_file)
         for line in lines:
             tweet = json.loads(line)
             user = tweet["user"]["username"]
+            print("Tweet trouvé : " + user, file = log_file)
             medias = tweet["media"]
             if type(medias) is list:
                 for media in medias:

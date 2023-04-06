@@ -4,12 +4,13 @@ import ftplib
 from scrap import Scrap
 from datetime import datetime
 
-import os
-log_file = open('tmp.txt', 'a')
-print(os.popen('whoami').readline(), file = log_file)
-print(os.popen('snscrape').readline(), file = log_file)
-log_file.close()
-exit()
+# import os
+# os.remove('tmp.txt')
+# log_file = open('tmp.txt', 'a')
+# print(os.popen('whoami').readline(), file = log_file)
+# print(os.popen('snscrape -h').readlines(), file = log_file)
+# log_file.close()
+# exit()
 
 def ftp_is_connected(ftp_host, ftp_login, ftp_pass, ftp_dir):
     if(not ftp_host or not ftp_login or not ftp_pass or not ftp_dir):
@@ -52,8 +53,7 @@ if path.exists(config_file):
                 str_now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
                 print(f"Recherche de {hashtag} - {str_now}", file = log_file)
                 scrapper = Scrap(ftp_host, ftp_login, ftp_pass, ftp_dir, keep_local)
-                scrapper.run(hashtag, False)
-              
+                scrapper.run(hashtag, True)
         else:
             log_file = open(log_file_name, 'a')
             print(f" FTP indisponible ou dossier FTP inexistant", file = log_file)
