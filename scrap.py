@@ -66,8 +66,8 @@ class Scrap:
                 if os.path.exists(save_path) == False:
                     os.mkdir(save_path)
                 save_date = datetime.now().strftime("%d%m%Y_%H%M%S")
-                print(f"Save : {save_date}___{save_path}/{photo_filename}", file = log_file)
-                shutil.move(photo_filename, save_date+"___"+save_path + "/" + photo_filename) 
+                print(f"Save : {save_path}/{save_date}___{photo_filename}", file = log_file)
+                shutil.move(photo_filename, save_path + "/" + save_date +"___" + photo_filename) 
             else:
                 os.remove(photo_filename)
         log_file.close()
